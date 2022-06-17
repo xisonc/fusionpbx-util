@@ -14,6 +14,8 @@ class FusionPBX_Util
 
 	// pbx data
 	public $domains = [];
+	public $domain;
+	public $domain_uuid;
 
 	// misc
 	public $useragent = 'Mozilla/5.0 (X11; Linux x86_64; rv:101.0) Gecko/20100101 Firefox/101.0';
@@ -50,7 +52,7 @@ class FusionPBX_Util
 		// send POST request to login
 		$fetch = $this->POST('/core/dashboard/', $vars);
 
-		// check login status by checking document body for domain list
+		// check login status by checking document body for id='domain_list'
 		if( strstr($fetch['body'], 'id=\'domains_list\'') )
 			$this->authed = true;
 
@@ -85,11 +87,17 @@ class FusionPBX_Util
 
 
 	// helper util to change domain in session
-	public function change_domain( $domain_uuid )
+	public function change_domain( $domain, $domain_uuid=null )
 	{
 		// check if authenticated
 		if( !$this->authed )
 			return false;
+
+		// check for domain in $this->domains
+		if( !$domain_uuid && array_key_exists($domain, $this->domains) )
+		{
+			$domain_uuid = $this->domains[$domain];
+		}
 
 		// vars
 		$vars = [];
@@ -99,7 +107,8 @@ class FusionPBX_Util
 		// submit request
 		$this->GET('/core/domains/domains.php', $vars);
 
-		// set uuid
+		// update current domain and domain_uuid
+		$this->domain = $domain;
 		$this->domain_uuid = $domain_uuid;
 	}
 
@@ -181,7 +190,6 @@ class FusionPBX_Util
 		if( $errNo )
 		{
 			error_log('CURL Error ('.$errNo.'): '.$errMsg);
-			//throw new \ErrorException('CURL Error ('.$errNo.'): '.$errMsg);
 			return false;
 		}
 
