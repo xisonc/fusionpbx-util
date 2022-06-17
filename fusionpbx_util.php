@@ -75,11 +75,8 @@ class FusionPBX_Util
 		// format: <a href='/core/domains/domains.php?domain_uuid={{uuid}}&domain_change=true'>{{domain}}</a>
 		preg_match_all('!href=\'\/core\/domains\/domains.php\?domain_uuid\=([0-9abcdef-]+?)\&(.*?)\>(.*?)\<\/a\>!mi', $fetch['body'], $matches);
 
-		// loop through matches and put into $this->domains
-		foreach( $matches[0] as $n=>$item )
-		{
-			$this->domains["{$matches[3][$n]}"] = $matches[1][$n];
-		}
+		// combine matches[3] as keys and matches[1] as values into a single array
+		$this->domains = array_combine($matches[3], $matches[1]);
 
 		// return domains
 		return $this->domains;
