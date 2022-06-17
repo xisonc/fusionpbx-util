@@ -3,7 +3,7 @@ FusionPBX_Util is a simple PHP class that allows you to perform GET/POST request
 
 I built this for my own purposes to make it easier to create extensions and destinations from an internal tool.
 
-This is in no way a complete REST API, nor is it ever going to be. If you need a full programmable REST API, there is a commercial REST API available to FusionPBX Gold level Members, more info here: https://www.fusionpbx.com/members
+This is in no way a complete REST API, nor is it ever going to be. If you need a full programmable REST API, there is a commercial REST API available to FusionPBX Purple level Members, more info here: https://www.fusionpbx.com/members
 
 The class includes a couple of helper functions, `domain_list()` to get a list of SIP domains on the server, and `change_domain()` to change the current domain context in the session.
 
